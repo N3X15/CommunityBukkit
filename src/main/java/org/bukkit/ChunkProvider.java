@@ -17,17 +17,11 @@ public abstract class ChunkProvider {
 	public abstract void populateChunk(int x, int z, byte[] abyte,
 			Biome[] biomes);
 
-	public boolean hasCustomTerrainGenerator() {
-		return false;
-	}
+	public abstract boolean hasCustomTerrainGenerator();
 
-	public boolean hasCustomPopulator() {
-		return false;
-	}
+	public abstract boolean hasCustomPopulator();
 
-	public boolean hasCustomCaves() {
-		return false;
-	}
+	public abstract boolean hasCustomCaves();
 
 	public abstract void generateCaves(Object parent, int x, int z, byte[] abyte);
 
