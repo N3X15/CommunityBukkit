@@ -133,9 +133,10 @@ public interface Server {
      * @param name Name of the world to load
      * @param environment Environment type of the world
      * @param wcm WorldChunkManager for the world to load.
+     * @param cp ChunkProvider for the world to load.
      * @return Newly created or loaded World
      */
-    public World createWorld(String name, World.Environment environment, Class<?> wcm);
+    public World createWorld(String name, World.Environment environment, WorldChunkManager wcm, ChunkProvider cp);
 
     /**
      * Gets the world with the given name

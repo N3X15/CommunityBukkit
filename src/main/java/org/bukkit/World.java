@@ -428,4 +428,6 @@ public interface World {
      * Saves world to disk
      */
     public void save();
+
+	public WorldProvider getProvider();
 }
