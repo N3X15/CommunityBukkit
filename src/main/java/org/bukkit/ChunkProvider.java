@@ -4,9 +4,15 @@ import org.bukkit.block.Biome;
 
 public abstract class ChunkProvider {
 
+	private boolean _hasCustomTerrain=false;
+	private boolean _hasCustomPopulator=false;
+	private boolean _hasCustomCaves=false;
+	private boolean _hasCustomSedimenter=false;
+
 	public int getBlockIndex(int x, int y, int z) {
         return x << 11 | z << 7 | y;
 	}
+	
 	/**
 	 * Set up the ChunkProvider
 	 * 
@@ -15,18 +21,25 @@ public abstract class ChunkProvider {
 	 */
 	public abstract void onLoad(World world, long seed);
 
-	public abstract boolean hasCustomTerrainGenerator();
+	public void setHasCustomTerrain(boolean yes) { this._hasCustomTerrain=yes; }
+	public final boolean hasCustomTerrain() { return this._hasCustomTerrain; }
 
-	public abstract boolean hasCustomPopulator();
+	public void setHasCustomPopulator(boolean yes) { _hasCustomPopulator=yes; }
+	public final boolean hasCustomPopulator() { return _hasCustomPopulator; }
 
-	public abstract boolean hasCustomCaves();
+	public void setHasCustomCaves(boolean yes) { _hasCustomCaves=yes; }
+	public final boolean hasCustomCaves() { return _hasCustomCaves; }
+	
+	public void setHasCustomSedimenter(boolean yes) { _hasCustomSedimenter=yes; }
+	public final boolean hasCustomSedimenter() { return _hasCustomSedimenter; }
 
-	public abstract void generateCaves(World world, int x, int z, byte[] abyte);
+	public void generateCaves(World world, int x, int z, byte[] abyte) {}
 
-	public abstract void generateChunk(World world, int x, int z, byte[] abyte,
-			Biome[] biomes, double[] temperature);
+	public void generateChunk(World world, int x, int z, byte[] abyte,
+			Biome[] biomes, double[] temperature) {}
 
-	public abstract void populateChunk(World world, int x, int z, byte[] abyte,
-			Biome[] biomes);
+	public void generateSediment(World world, int x, int z, byte[] abyte,
+			Biome[] biomes) {}
 
+	public void populateChunk(Object ichunkprovider, int x, int z) {}
 }
