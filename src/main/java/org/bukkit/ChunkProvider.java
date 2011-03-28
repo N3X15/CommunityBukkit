@@ -4,6 +4,9 @@ import org.bukkit.block.Biome;
 
 public abstract class ChunkProvider {
 
+	public int getBlockIndex(int x, int y, int z) {
+        return x << 11 | z << 7 | y;
+	}
 	/**
 	 * Set up the ChunkProvider
 	 * 
