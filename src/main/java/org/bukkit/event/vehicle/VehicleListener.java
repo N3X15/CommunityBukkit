@@ -73,6 +73,9 @@ public class VehicleListener implements Listener {
      *
      * @param event
      */
-    public void onVehicleUpdate(VehicleEvent event) {
+    public void onVehicleUpdate(VehicleUpdateEvent event) {
     }
+
+    // Prevent compilation of old signatures TODO: Remove after 1.4
+    @Deprecated public final void onVehicleUpdate(VehicleEvent event) {}
 }

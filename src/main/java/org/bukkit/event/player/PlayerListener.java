@@ -15,7 +15,7 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerJoin(PlayerEvent event) {
+    public void onPlayerJoin(PlayerJoinEvent event) {
     }
 
     /**
@@ -23,7 +23,7 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerQuit(PlayerEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
     }
 
     /**
@@ -48,7 +48,7 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerCommandPreprocess(PlayerChatEvent event) {
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
     }
 
     /**
@@ -64,7 +64,7 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerTeleport(PlayerMoveEvent event) {
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
     }
 
     /**
@@ -162,4 +162,10 @@ public class PlayerListener implements Listener {
      */
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
     }
+
+    // Prevent compilation of old signatures TODO: Remove after 1.4
+    @Deprecated public final void onPlayerQuit(PlayerEvent event) {}
+    @Deprecated public final void onPlayerCommandPreprocess(PlayerChatEvent event) {}
+    @Deprecated public final void onPlayerTeleport(PlayerMoveEvent event) {}
+    @Deprecated public final void onPlayerJoin(PlayerEvent event) {}
 }

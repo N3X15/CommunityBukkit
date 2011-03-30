@@ -26,9 +26,9 @@ public class WorldListener implements Listener {
     /**
     * Called when a world is saved
     *
-    * param event Relevant event details
+    * @param event Relevant event details
     */
-    public void onWorldSave(WorldEvent event) {
+    public void onWorldSave(WorldSaveEvent event) {
     }
 
     /**
@@ -36,6 +36,10 @@ public class WorldListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onWorldLoad(WorldEvent event) {
+    public void onWorldLoad(WorldLoadEvent event) {
     }
+
+    // Prevent compilation of old signatures TODO: Remove after 1.4
+    @Deprecated public final void onWorldLoad(WorldEvent event) {}
+    @Deprecated public final void onWorldSave(WorldEvent event) {}
 }

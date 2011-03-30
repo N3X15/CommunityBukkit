@@ -4,7 +4,6 @@ package org.bukkit.plugin.java;
 import java.io.File;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -25,6 +24,7 @@ public abstract class JavaPlugin implements Plugin {
     private File dataFolder = null;
     private ClassLoader classLoader = null;
     private Configuration config = null;
+    private boolean naggable = true;
 
     public JavaPlugin() {
     }
@@ -190,4 +190,13 @@ public abstract class JavaPlugin implements Plugin {
     public void onLoad() {
         // Empty!
     }
+
+    public final boolean isNaggable() {
+        return naggable;
+    }
+
+    public final void setNaggable(boolean canNag) {
+        this.naggable = canNag;;
+    }
+
 }
