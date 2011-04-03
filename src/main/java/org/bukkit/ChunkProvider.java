@@ -19,7 +19,7 @@ public abstract class ChunkProvider {
 	 * @param world
 	 * @param seed
 	 */
-	public abstract void onLoad(World world, long seed);
+	public abstract void onLoad(Object world, long seed);
 
 	public void setHasCustomTerrain(boolean yes) { this._hasCustomTerrain=yes; }
 	public final boolean hasCustomTerrain() { return this._hasCustomTerrain; }
@@ -33,13 +33,13 @@ public abstract class ChunkProvider {
 	public void setHasCustomSedimenter(boolean yes) { _hasCustomSedimenter=yes; }
 	public final boolean hasCustomSedimenter() { return _hasCustomSedimenter; }
 
-	public void generateCaves(World world, int x, int z, byte[] abyte) {}
+	public void generateCaves(Object world, int x, int z, byte[] abyte) {}
 
-	public void generateChunk(World world, int x, int z, byte[] abyte,
+	public void generateChunk(Object world, int x, int z, byte[] abyte,
 			Biome[] biomes, double[] temperature) {}
 
-	public void generateSediment(World world, int x, int z, byte[] abyte,
+	public void generateSediment(Object world, int x, int z, byte[] abyte,
 			Biome[] biomes) {}
 
-	public void populateChunk(Object ichunkprovider, int x, int z) {}
+	public void populateChunk(Object world, int x, int z) {}
 }
