@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import org.bukkit.Server;
 import org.bukkit.event.CustomEventListener;
@@ -67,7 +68,41 @@ public final class JavaPluginLoader implements PluginLoader {
             throw new InvalidPluginException(ex);
         }
 
-        File dataFolder = getDataFolder(file);
+        File dataFolder = new File(file.getParentFile(), description.getName());
+        File oldDataFolder = getDataFolder(file);
+
+        // Found old data folder
+        if (dataFolder.equals(oldDataFolder)) {
+            // They are equal -- nothing needs to be done!
+        } else if (dataFolder.isDirectory() && oldDataFolder.isDirectory()) {
+            server.getLogger().log( Level.INFO, String.format(
+                "While loading %s (%s) found old-data folder: %s next to the new one: %s",
+                description.getName(),
+                file,
+                oldDataFolder,
+                dataFolder
+            ));
+        } else if (oldDataFolder.isDirectory() && !dataFolder.exists()) {
+            if (!oldDataFolder.renameTo(dataFolder)) {
+                throw new InvalidPluginException(new Exception("Unable to rename old data folder: '" + oldDataFolder + "' to: '" + dataFolder + "'"));
+            }
+            server.getLogger().log( Level.INFO, String.format(
+                "While loading %s (%s) renamed data folder: '%s' to '%s'",
+                description.getName(),
+                file,
+                oldDataFolder,
+                dataFolder
+            ));
+        }
+
+        if (dataFolder.exists() && !dataFolder.isDirectory()) {
+            throw new InvalidPluginException(new Exception(String.format(
+                "Projected datafolder: '%s' for %s (%s) exists and is not a directory",
+                dataFolder,
+                description.getName(),
+                file
+            )));
+        }
 
         ArrayList<String> depend;
         try {
@@ -277,6 +312,18 @@ public final class JavaPluginLoader implements PluginLoader {
                     ((PlayerListener) listener).onPlayerBucketFill((PlayerBucketFillEvent) event);
                 }
             };
+        case PLAYER_BED_ENTER:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((PlayerListener) listener).onPlayerBedEnter((PlayerBedEnterEvent) event);
+                }
+            };
+        case PLAYER_BED_LEAVE:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((PlayerListener) listener).onPlayerBedLeave((PlayerBedLeaveEvent) event);
+                }
+            };
 
         // Block Events
         case BLOCK_PHYSICS:
@@ -379,6 +426,12 @@ public final class JavaPluginLoader implements PluginLoader {
                     ((WorldListener) listener).onChunkUnload((ChunkUnloadEvent) event);
                 }
             };
+        case SPAWN_CHANGE:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((WorldListener) listener).onSpawnChange((SpawnChangeEvent) event);
+                }
+            };
         case WORLD_SAVE:
             return new EventExecutor() {
                 public void execute(Listener listener, Event event) {
@@ -429,6 +482,12 @@ public final class JavaPluginLoader implements PluginLoader {
                     ((EntityListener) listener).onEntityTarget((EntityTargetEvent) event);
                 }
             };
+        case ENTITY_INTERACT:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((EntityListener) listener).onEntityInteract((EntityInteractEvent) event);
+                }
+            };
         case CREATURE_SPAWN:
             return new EventExecutor() {
                 public void execute(Listener listener, Event event) {
@@ -447,6 +506,11 @@ public final class JavaPluginLoader implements PluginLoader {
             return new EventExecutor() {
                 public void execute(Listener listener, Event event) {
                     ((VehicleListener) listener).onVehicleDamage((VehicleDamageEvent) event);
+                }
+            };
+        case VEHICLE_DESTROY:
+            return new EventExecutor() { public void execute( Listener listener, Event event ) {
+                    ((VehicleListener)listener).onVehicleDestroy( (VehicleDestroyEvent)event );
                 }
             };
         case VEHICLE_COLLISION_BLOCK:
