@@ -13,7 +13,7 @@ public abstract class WorldChunkManager {
     public WorldChunkManager(World world) {
 	}
 
-    public Biome getBiome(int x, int z) {
+    public Biome getBiomeAt(int x, int z) {
         return this.getBiomes(x, z, 1, 1)[0];
     }
 
