@@ -42,4 +42,6 @@ public abstract class ChunkProvider {
 			Biome[] biomes) {}
 
 	public void populateChunk(Object world, int x, int z) {}
+	
+	public boolean canSpawnAt(World w,int x, int z) {return false;}
 }
