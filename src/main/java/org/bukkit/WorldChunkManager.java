@@ -23,5 +23,7 @@ public abstract class WorldChunkManager {
 
     public abstract Biome[] genBiomes(Biome[] abiomebase, int x, int z, int h, int w);
     
-	public abstract boolean canSpawnAt(int x, int z);
+	public boolean canSpawnAt(int x, int z) {
+		return true;
+	}
 }
