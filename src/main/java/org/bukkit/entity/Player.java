@@ -129,6 +129,38 @@ public interface Player extends HumanEntity, CommandSender {
      * @return
      */
     public boolean isSleepingIgnored();
+    
+    /**
+     * Play a note for a player at a location. This requires a note block
+     * at the particular location (as far as the client is concerned). This
+     * will not work without a note block. This will not work with cake.
+     * 
+     * @param loc
+     * @param instrument
+     * @param note
+     * @return
+     */
+    public void playNote(Location loc, byte instrument, byte note);
+    
+    /**
+     * Send a block change. This fakes a block change packet for a user at
+     * a certain location. This will not actually change the world in any way.
+     * 
+     * @param loc
+     * @param material
+     * @param data 
+     */
+    public void sendBlockChange(Location loc, Material material, byte data);
+    
+    /**
+     * Send a block change. This fakes a block change packet for a user at
+     * a certain location. This will not actually change the world in any way.
+     * 
+     * @param loc
+     * @param material
+     * @param data 
+     */
+    public void sendBlockChange(Location loc, int material, byte data);
 
     /**
      * Forces an update of the player's entire inventory.

@@ -3,12 +3,15 @@ package org.bukkit;
 
 import com.avaje.ebean.config.ServerConfig;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
+
 import java.util.List;
 import java.util.logging.Logger;
 import org.bukkit.command.PluginCommand;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.scheduler.BukkitScheduler;
 
 /**
@@ -81,6 +84,14 @@ public interface Server {
     public int broadcastMessage(String message);
 
     /**
+     * Gets the name of the update folder. The update folder is used to safely update
+     * plugins at the right moment on a plugin load.
+     *
+     * @return The name of the update folder
+     */
+    public String getUpdateFolder();
+
+    /**
      * Gets a player object by the given username
      *
      * This method may not return objects for offline players
@@ -115,6 +126,13 @@ public interface Server {
      * @return Scheduler for this Server instance
      */
     public BukkitScheduler getScheduler();
+
+    /**
+     * Gets a services manager
+     *
+     * @return Services manager
+     */
+    public ServicesManager getServicesManager();
 
     /**
      * Gets a list of all worlds on this server
@@ -207,4 +225,11 @@ public interface Server {
      * @param config ServerConfig to populate
      */
     public void configureDbConfig(ServerConfig config);
+
+    /**
+     * Adds a recipe to the crafting manager.
+     * @param recipe The recipe to add.
+     * @return True to indicate that the recipe was added.
+     */
+    public boolean addRecipe(Recipe recipe);
 }

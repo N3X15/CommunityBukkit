@@ -45,6 +45,10 @@ public final class JavaPluginLoader implements PluginLoader {
     }
 
     public Plugin loadPlugin(File file) throws InvalidPluginException, InvalidDescriptionException, UnknownDependencyException {
+        return loadPlugin(file, false);
+    }
+
+    public Plugin loadPlugin(File file, boolean ignoreSoftDependencies) throws InvalidPluginException, InvalidDescriptionException, UnknownDependencyException {
         JavaPlugin result = null;
         PluginDescriptionFile description = null;
 
@@ -123,6 +127,28 @@ public final class JavaPluginLoader implements PluginLoader {
             PluginClassLoader current = loaders.get(pluginName);
             if(current == null) {
                 throw new UnknownDependencyException(pluginName);
+            }
+        }
+
+        if (!ignoreSoftDependencies) {
+            ArrayList<String> softDepend;
+            try {
+                softDepend = (ArrayList)description.getSoftDepend();
+                if (softDepend == null) {
+                    softDepend = new ArrayList<String>();
+                }
+            } catch (ClassCastException ex) {
+                 throw new InvalidPluginException(ex);
+            }
+
+            for (String pluginName : softDepend) {
+                if (loaders == null) {
+                    throw new UnknownSoftDependencyException(pluginName);
+                }
+                PluginClassLoader current = loaders.get(pluginName);
+                if (current == null) {
+                    throw new UnknownSoftDependencyException(pluginName);
+                }
             }
         }
 
@@ -252,6 +278,12 @@ public final class JavaPluginLoader implements PluginLoader {
             return new EventExecutor() {
                 public void execute(Listener listener, Event event) {
                     ((PlayerListener) listener).onPlayerInteract((PlayerInteractEvent) event);
+                }
+            };
+        case PLAYER_INTERACT_ENTITY:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((PlayerListener) listener).onPlayerInteractEntity((PlayerInteractEntityEvent) event);
                 }
             };
         case PLAYER_LOGIN:
@@ -398,6 +430,18 @@ public final class JavaPluginLoader implements PluginLoader {
             return new EventExecutor() {
                 public void execute(Listener listener, Event event) {
                     ((BlockListener) listener).onBlockBreak((BlockBreakEvent) event);
+                }
+            };
+        case SNOW_FORM:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((BlockListener) listener).onSnowForm((SnowFormEvent) event);
+                }
+            };
+        case BLOCK_DISPENSE:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((BlockListener) listener).onBlockDispense((BlockDispenseEvent) event);
                 }
             };
 

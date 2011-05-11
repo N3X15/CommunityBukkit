@@ -33,7 +33,7 @@ public class BlockListener implements Listener {
      * Called when a block flows (water/lava)
      *
      * @param event Relevant event details
-     * @throws BukkitAuthorNagException 
+     * @throws BukkitAuthorNagException
      */
     public void onBlockFromTo(BlockFromToEvent event) {
         onBlockFlow(event);
@@ -107,5 +107,21 @@ public class BlockListener implements Listener {
      * @param event Relevant event details
      */
     public void onBlockBreak(BlockBreakEvent event) {
+    }
+
+    /**
+     * Called when a world is attempting to place a block during a snowfall
+     *
+     * @param event Relevant event details
+     */
+    public void onSnowForm(SnowFormEvent event) {
+    }
+    
+    /**
+     * Called when a block is dispensing an item
+     * 
+     * @param event Relevant event details
+     */
+    public void onBlockDispense(BlockDispenseEvent event) {
     }
 }

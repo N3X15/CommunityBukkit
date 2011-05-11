@@ -314,6 +314,14 @@ public interface World {
      * @return
      */
     public LightningStrike strikeLightning(Location loc);
+    
+    /**
+     * Strikes lightning at the given {@link Location} without doing damage
+     * 
+     * @param loc The location to strike lightning
+     * @return
+     */
+    public LightningStrike strikeLightningEffect(Location loc);
 
     /**
      * Get a list of all entities in this World
@@ -495,6 +503,18 @@ public interface World {
      * @return This worlds Seed
      */
     public long getSeed();
+
+    /**
+     * Gets the current PVP setting for this world.
+     * @return
+     */
+    public boolean getPVP();
+
+    /**
+     * Sets the PVP setting for this world.
+     * @param pvp True/False whether PVP should be Enabled.
+     */
+    public void setPVP(boolean pvp);
 
     /**
      * Saves world to disk
