@@ -3,8 +3,12 @@ package org.bukkit.command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 
@@ -14,6 +18,7 @@ import static org.bukkit.util.Java15Compat.Arrays_copyOfRange;
 
 public final class SimpleCommandMap implements CommandMap {
     private final Map<String, Command> knownCommands = new HashMap<String, Command>();
+    private final Set<String> aliases = new HashSet<String>();
     private final Server server;
 
     public SimpleCommandMap(final Server server) {
@@ -28,46 +33,84 @@ public final class SimpleCommandMap implements CommandMap {
     }
 
     /**
-     * Registers multiple commands. Returns name of first command for which fallback had to be used if any.
-     * @param plugin
-     * @return
+     * {@inheritDoc}
      */
     public void registerAll(String fallbackPrefix, List<Command> commands) {
         if (commands != null) {
-            for(Command c : commands) {
+            for (Command c : commands) {
                 register(fallbackPrefix, c);
             }
         }
     }
 
-    private void register(String fallbackPrefix, Command command) {
-        List<String> names = new ArrayList<String>();
-        names.add(command.getName());
-        names.addAll(command.getAliases());
-
-        for (String name : names) {
-            register(name, fallbackPrefix, command);
-        }
+    /**
+     * {@inheritDoc}
+     */
+    public boolean register(String fallbackPrefix, Command command) {
+        return register(command.getName(), fallbackPrefix, command);
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean register(String name, String fallbackPrefix, Command command) {
-        boolean nameInUse = (getCommand(name) != null);
-        
-        if (nameInUse) {
-            name = fallbackPrefix + ":" + name;
+    public boolean register(String label, String fallbackPrefix, Command command) {
+        boolean registeredPassedLabel = register(label, fallbackPrefix, command, false);
+
+        Iterator iterator = command.getAliases().iterator();
+        while (iterator.hasNext()) {
+            if (!register((String) iterator.next(), fallbackPrefix, command, true)) {
+                iterator.remove();
+            }
         }
 
-        knownCommands.put(name.toLowerCase(), command);
-        return !nameInUse;
+        // Register to us so further updates of the commands label and aliases are postponed until its reregistered
+        command.register(this);
+
+        return registeredPassedLabel;
     }
-    
+
+    /**
+     * Registers a command with the given name is possible, otherwise uses fallbackPrefix to create a unique name if its not an alias
+     * @param name the name of the command, without the '/'-prefix.
+     * @param fallbackPrefix a prefix which is prepended to the command with a ':' one or more times to make the command unique
+     * @param command the command to register
+     * @return true if command was registered with the passed in label, false otherwise.
+     * If isAlias was true a return of false indicates no command was registerd
+     * If isAlias was false a return of false indicates the fallbackPrefix was used one or more times to create a unique name for the command
+     */
+    private synchronized boolean register(String label, String fallbackPrefix, Command command, boolean isAlias) {
+        String lowerLabel = label.trim().toLowerCase();
+
+        if (isAlias && knownCommands.containsKey(lowerLabel)) {
+            // Request is for an alias and it conflicts with a existing command or previous alias ignore it
+            // Note: This will mean it gets removed from the commands list of active aliases
+            return false;
+        }
+
+        boolean registerdPassedLabel = true;
+
+        // If the command exists but is an alias we overwrite it, otherwise we rename it based on the fallbackPrefix
+        while (knownCommands.containsKey(lowerLabel) && !aliases.contains(lowerLabel)) {
+            lowerLabel = fallbackPrefix + ":" + lowerLabel;
+            registerdPassedLabel = false;
+        }
+
+        if (isAlias) {
+            aliases.add(lowerLabel);
+        } else {
+            // Ensure lowerLabel isn't listed as a alias anymore and update the commands registered name
+            aliases.remove(lowerLabel);
+            command.setLabel(lowerLabel);
+        }
+        knownCommands.put(lowerLabel, command);
+
+        return registerdPassedLabel;
+    }
+
     /**
      * {@inheritDoc}
      */
-    public boolean dispatch(CommandSender sender, String commandLine) {
+    public boolean dispatch(CommandSender sender, String commandLine) throws CommandException {
         String[] args = commandLine.split(" ");
 
         if (args.length == 0) {
@@ -75,28 +118,27 @@ public final class SimpleCommandMap implements CommandMap {
         }
 
         String sentCommandLabel = args[0].toLowerCase();
-
-        args = Arrays_copyOfRange(args, 1, args.length);
-
         Command target = getCommand(sentCommandLabel);
-        boolean isRegisteredCommand = (target != null);
-        if (isRegisteredCommand) {
-            try {
-                target.execute(sender, sentCommandLabel, args);
-            } catch (CommandException ex) {
-                throw ex;
-            } catch (Throwable ex) {
-                throw new CommandException("Unhandled exception executing '" + commandLine + "' in " + target, ex);
-            }
+        if (target == null) {
+            return false;
         }
-        return isRegisteredCommand;
+
+        try {
+            return target.execute(sender, sentCommandLabel, Arrays_copyOfRange(args, 1, args.length));
+        } catch (CommandException ex) {
+            throw ex;
+        } catch (Throwable ex) {
+            throw new CommandException("Unhandled exception executing '" + commandLine + "' in " + target, ex);
+        }
     }
 
-    public void clearCommands() {
-        synchronized (this) {
-            knownCommands.clear();
-            setDefaultCommands(server);
+    public synchronized void clearCommands() {
+        for (Map.Entry<String,Command> entry : knownCommands.entrySet()) {
+            entry.getValue().unregister(this);
         }
+        knownCommands.clear();
+        aliases.clear();
+        setDefaultCommands(server);
     }
 
     public Command getCommand(String name) {
@@ -117,8 +159,7 @@ public final class SimpleCommandMap implements CommandMap {
         @Override
         public boolean execute(CommandSender sender, String currentAlias, String[] args) {
             if (args.length == 0) {
-                sender.sendMessage("This server is running " + ChatColor.GREEN
-                        + server.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + server.getVersion());
+                sender.sendMessage("This server is running " + ChatColor.GREEN + server.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + server.getVersion());
                 sender.sendMessage("This server is also sporting some funky dev build of Bukkit!");
             } else {
                 StringBuilder name = new StringBuilder();
@@ -134,6 +175,7 @@ public final class SimpleCommandMap implements CommandMap {
 
                 if (plugin != null) {
                     PluginDescriptionFile desc = plugin.getDescription();
+
                     sender.sendMessage(ChatColor.GREEN + desc.getName() + ChatColor.WHITE + " version " + ChatColor.GREEN + desc.getVersion());
 
                     if (desc.getDescription() != null) {
@@ -235,7 +277,7 @@ public final class SimpleCommandMap implements CommandMap {
                     pluginList.append(", ");
                 }
 
-                pluginList.append(ChatColor.GREEN);
+                pluginList.append(plugin.isEnabled() ? ChatColor.GREEN : ChatColor.RED);
                 pluginList.append(plugin.getDescription().getName());
             }
 

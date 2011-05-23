@@ -1,9 +1,9 @@
-
 package org.bukkit.entity;
 
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -12,6 +12,7 @@ import java.util.List;
  * Represents a base entity in the world
  */
 public interface Entity {
+
     /**
      * Gets the entity's current position
      *
@@ -109,7 +110,7 @@ public interface Entity {
      * @param ticks
      */
     public void setFireTicks(int ticks);
-    
+
     /**
      * Mark the entity's removal.
      */
@@ -130,14 +131,14 @@ public interface Entity {
     /**
      * Gets the primary passenger of a vehicle. For vehicles that could have
      * multiple passengers, this will only return the primary passenger.
-     * 
+     *
      * @return an entity
      */
     public abstract Entity getPassenger();
 
     /**
      * Set the passenger of a vehicle.
-     * 
+     *
      * @param passenger
      * @return false if it could not be done for whatever reason
      */
@@ -145,28 +146,40 @@ public interface Entity {
 
     /**
      * Returns true if the vehicle has no passengers.
-     * 
+     *
      * @return
      */
     public abstract boolean isEmpty();
 
     /**
      * Eject any passenger. True if there was a passenger.
-     * 
+     *
      * @return
      */
     public abstract boolean eject();
-    
+
     /**
      * Returns the distance this entity has fallen
-     * @return 
+     * @return
      */
     public float getFallDistance();
-    
+
     /**
      * Sets the fall distance for this entity
-     * @param distance 
+     * @param distance
      */
     public void setFallDistance(float distance);
+
+    /**
+     * Record the last {@link EntityDamageEvent} inflicted on this entity
+     * @param event a {@link EntityDamageEvent}
+     */
+    public void setLastDamageCause(EntityDamageEvent event);
+
+    /**
+     * Retrieve the last {@link EntityDamageEvent} inflicted on this entity. This event may have been cancelled.
+     * @return the last known {@link EntityDamageEvent} or null if hitherto unharmed
+     */
+    public EntityDamageEvent getLastDamageCause();
 
 }
