@@ -33,15 +33,15 @@ public abstract class ChunkProvider {
 	public void setHasCustomSedimenter(boolean yes) { _hasCustomSedimenter=yes; }
 	public final boolean hasCustomSedimenter() { return _hasCustomSedimenter; }
 
-	public void generateCaves(Object world, int x, int z, byte[] abyte) {}
+	public void generateCaves(World world, int x, int z, byte[][][] blocks) {}
 
-	public void generateChunk(Object world, int x, int z, byte[] abyte,
-			Biome[] biomes, double[] temperature) {}
+	public void generateChunk(World world, int x, int z, byte[][][] blocks,
+			Biome[][] biomes, double[][] temperature) {}
 
-	public void generateSediment(Object world, int x, int z, byte[] abyte,
-			Biome[] biomes) {}
+	public void generateSediment(World world, int x, int z, byte[][][] blocks,
+			Biome[][] biomes) {}
 
-	public void populateChunk(Object world, int x, int z) {}
+	public void populateChunk(World world, int x, int z) {}
 	
 	public boolean canSpawnAt(World w,int x, int z) {return false;}
 }
