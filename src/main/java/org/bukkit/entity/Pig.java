@@ -2,19 +2,20 @@ package org.bukkit.entity;
 
 /**
  * Represents a Pig.
+ *
+ * @author Cogito
+ *
  */
-public interface Pig extends Animals, Vehicle {
+public interface Pig extends Animals {
 
     /**
-     *  Check if the pig has a saddle.
-     *
+     * @author xPaw
      * @return if the pig has been saddled.
      */
     public boolean hasSaddle();
 
     /**
-     * Sets if the pig has a saddle or not
-     *
+     * @author xPaw
      * @param saddled set if the pig has a saddle or not.
      */
     public void setSaddle(boolean saddled);

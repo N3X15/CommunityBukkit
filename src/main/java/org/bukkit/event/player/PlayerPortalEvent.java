@@ -1,10 +1,8 @@
 package org.bukkit.event.player;
 
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Block;
-
 
 /**
  * Called when a player completes the portaling process by standing in a portal
@@ -15,11 +13,10 @@ public class PlayerPortalEvent extends PlayerTeleportEvent {
         super(Type.PLAYER_PORTAL, player, from, to);
     }
 
-    public void useTravelAgent(boolean useTravelAgent) {
+    public void useTravelAgent(boolean useTravelAgent){
         this.useTravelAgent = useTravelAgent;
     }
-
-    public boolean useTravelAgent() {
+    public boolean useTravelAgent(){
         return useTravelAgent;
     }
 }

@@ -1,6 +1,7 @@
 package org.bukkit.event.player;
 
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.AuthorNagException;
 
 /**
  * Handles all events thrown in relation to a Player
@@ -13,14 +14,20 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerJoin(PlayerJoinEvent event) {}
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        onPlayerJoin((PlayerEvent) event);
+        throw new AuthorNagException("onPlayerJoin has been replaced with a new signature, (PlayerJoinEvent)");
+    }
 
     /**
      * Called when a player leaves a server
      *
      * @param event Relevant event details
      */
-    public void onPlayerQuit(PlayerQuitEvent event) {}
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        onPlayerQuit((PlayerEvent) event);
+        throw new AuthorNagException("onPlayerQuit has been replaced with a new signature, (PlayerQuitEvent)");
+    }
 
     /**
      * Called when a player gets kicked from the server
@@ -42,7 +49,10 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {}
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        onPlayerCommandPreprocess((PlayerChatEvent) event);
+        throw new AuthorNagException("onPlayerCommandPreprocess has been replaced with a new signature, (PlayerCommandPreprocessEvent)");
+    }
 
     /**
      * Called when a player attempts to move location in a world
@@ -56,7 +66,10 @@ public class PlayerListener implements Listener {
      *
      * @param event Relevant event details
      */
-    public void onPlayerTeleport(PlayerTeleportEvent event) {}
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        onPlayerTeleport((PlayerMoveEvent) event);
+        throw new AuthorNagException("onPlayerTeleport has been replaced with a new signature, (PlayerTeleportEvent)");
+    }
 
     /**
      * Called when a player respawns
@@ -176,4 +189,10 @@ public class PlayerListener implements Listener {
      * @param event Relevant event details
      */
     public void onPlayerPortal(PlayerPortalEvent event) {}
+
+    // TODO: Remove after RB
+    @Deprecated public void onPlayerQuit(PlayerEvent event) {}
+    @Deprecated public void onPlayerCommandPreprocess(PlayerChatEvent event) {}
+    @Deprecated public void onPlayerTeleport(PlayerMoveEvent event) {}
+    @Deprecated public void onPlayerJoin(PlayerEvent event) {}
 }
