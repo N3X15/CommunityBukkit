@@ -509,12 +509,6 @@ public interface World {
     public void save();
 
     /**
-     * Get WorldProvider for this world
-     * @return The WorldProvider for this world.
-     */
-	public WorldProvider getProvider();
-
-    /**
      * Represents various map environment types that a world may be
      */
     public enum Environment {

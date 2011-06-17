@@ -165,19 +165,6 @@ public interface Server {
     public World createWorld(String name, World.Environment environment, long seed);
 
     /**
-     * Creates or loads a world with the given chunk manager.
-     * If the world is already loaded, it will just return the equivalent of
-     * getWorld(name)
-     *
-     * @param name Name of the world to load
-     * @param environment Environment type of the world
-     * @param wcm WorldChunkManager for the world to load.
-     * @param cp ChunkProvider for the world to load.
-     * @return Newly created or loaded World
-     */
-    public World createWorld(String name, World.Environment environment, long seed, WorldChunkManager wcm, ChunkProvider cp);
-
-    /**
      * Gets the world with the given name
      *
      * @param name Name of the world to retrieve
