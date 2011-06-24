@@ -2,6 +2,8 @@ package org.bukkit.event;
 
 import java.io.Serializable;
 
+import org.bukkit.entity.Projectile;
+
 /**
  * Represents an event
  */
@@ -376,6 +378,24 @@ public abstract class Event implements Serializable {
          * @see org.bukkit.event.block.SnowFormEvent
          */
         SNOW_FORM (Category.BLOCK),
+        /**
+         * Called when a block is formed based on world conditions
+         *
+         * @see org.bukkit.event.block.BlockFormEvent
+         */
+        BLOCK_FORM (Category.BLOCK),
+        /**
+         * Called when a block spreads based on world conditions
+         *
+         * @see org.bukkit.event.block.BlockSpreadEvent
+         */
+        BLOCK_SPREAD (Category.BLOCK),
+        /**
+         * Called when a block fades, melts or disappears based on world conditions
+         *
+         * @see org.bukkit.event.block.BlockFadeEvent
+         */
+        BLOCK_FADE (Category.BLOCK),
 
         /**
          * INVENTORY EVENTS
@@ -411,6 +431,20 @@ public abstract class Event implements Serializable {
          * @todo: add javadoc see comment
          */
         INVENTORY_TRANSACTION (Category.INVENTORY),
+
+        /**
+         * Called when an ItemStack is successfully smelted in a furnace.
+         *
+         * @see org.bukkit.event.inventory.FurnaceSmeltEvent
+         */
+        FURNACE_SMELT (Category.INVENTORY),
+
+        /**
+         * Called when an ItemStack is successfully burned as fuel in a furnace.
+         *
+         * @see org.bukkit.event.inventory.FurnaceBurnEvent
+         */
+        FURNACE_BURN (Category.INVENTORY),
 
         /**
          * SERVER EVENTS
@@ -455,11 +489,13 @@ public abstract class Event implements Serializable {
          */
         CHUNK_UNLOAD (Category.WORLD),
         /**
-         * Called when a chunk needs to be generated
+         * Called when a newly created chunk has been populated.
          *
-         * @todo: add javadoc see comment
+         * If your intent is to populate the chunk using this event, please see {@link BlockPopulator}
+         *
+         * @see org.bukkit.event.world.ChunkPopulateEvent
          */
-        CHUNK_GENERATION (Category.WORLD),
+        CHUNK_POPULATED (Category.WORLD),
         /**
          * Called when an ItemEntity spawns in the world
          *
@@ -598,6 +634,19 @@ public abstract class Event implements Serializable {
          * @see org.bukkit.event.entity.EntityTameEvent
          */
         ENTITY_TAME (Category.LIVING_ENTITY),
+        /**
+         * Called when a {@link Projectile} hits something
+         *
+         * @see org.bukkit.event.entity.ProjectileHitEvent
+         */
+        PROJECTILE_HIT (Category.ENTITY),
+
+        /**
+         * Called when a LivingEntity is regains health
+         *
+         * @see org.bukkit.event.entity.EntityRegainHealthEvent
+         */
+        ENTITY_REGAIN_HEALTH (Category.LIVING_ENTITY),
 
         /**
          * WEATHER EVENTS

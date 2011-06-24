@@ -87,11 +87,12 @@ public final class SimpleCommandMap implements CommandMap {
             return false;
         }
 
+        String lowerPrefix = fallbackPrefix.trim().toLowerCase();
         boolean registerdPassedLabel = true;
 
         // If the command exists but is an alias we overwrite it, otherwise we rename it based on the fallbackPrefix
         while (knownCommands.containsKey(lowerLabel) && !aliases.contains(lowerLabel)) {
-            lowerLabel = fallbackPrefix + ":" + lowerLabel;
+            lowerLabel = lowerPrefix + ":" + lowerLabel;
             registerdPassedLabel = false;
         }
 
@@ -137,7 +138,7 @@ public final class SimpleCommandMap implements CommandMap {
     }
 
     public synchronized void clearCommands() {
-        for (Map.Entry<String,Command> entry : knownCommands.entrySet()) {
+        for (Map.Entry<String, Command> entry : knownCommands.entrySet()) {
             entry.getValue().unregister(this);
         }
         knownCommands.clear();
@@ -147,6 +148,39 @@ public final class SimpleCommandMap implements CommandMap {
 
     public Command getCommand(String name) {
         return knownCommands.get(name.toLowerCase());
+    }
+
+    public void registerServerAliases() {
+        Map<String, String[]> values = server.getCommandAliases();
+
+        for (String alias : values.keySet()) {
+            String[] targetNames = values.get(alias);
+            List<Command> targets = new ArrayList<Command>();
+            String bad = "";
+
+            for (String name : targetNames) {
+                Command command = getCommand(name);
+
+                if (command == null) {
+                    bad += name + ", ";
+                } else {
+                    targets.add(command);
+                }
+            }
+
+            // We register these as commands so they have absolute priority.
+
+            if (targets.size() > 0) {
+                knownCommands.put(alias.toLowerCase(), new MultipleCommandAlias(alias.toLowerCase(), targets.toArray(new Command[0])));
+            } else {
+                knownCommands.remove(alias.toLowerCase());
+            }
+
+            if (bad.length() > 0) {
+                bad = bad.substring(0, bad.length() - 2);
+                server.getLogger().warning("The following command(s) could not be aliased under '" + alias + "' because they do not exist: " + bad);
+            }
+        }
     }
 
     private static class VersionCommand extends Command {
