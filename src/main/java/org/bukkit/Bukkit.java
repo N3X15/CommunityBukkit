@@ -1,6 +1,7 @@
 package org.bukkit;
 
 import com.avaje.ebean.config.ServerConfig;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +52,7 @@ public final class Bukkit {
         }
 
         Bukkit.server = server;
-        server.getLogger().info("This server is running " + getName() + " version " + getVersion());
+        server.getLogger().info("This server is running " + getName() + " version " + getVersion() + " (Implementing API version " + getBukkitVersion() + ")");
     }
 
     public static String getName() {
@@ -60,6 +61,10 @@ public final class Bukkit {
 
     public static String getVersion() {
         return server.getVersion();
+    }
+
+    public static String getBukkitVersion() {
+        return server.getBukkitVersion();
     }
 
     public static Player[] getOnlinePlayers() {
@@ -276,5 +281,9 @@ public final class Bukkit {
 
     public static Set<OfflinePlayer> getOperators() {
         return server.getOperators();
+    }
+
+    public static File getWorldContainer() {
+        return server.getWorldContainer();
     }
 }

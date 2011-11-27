@@ -1,5 +1,6 @@
 package org.bukkit;
 
+import java.io.File;
 import org.bukkit.generator.ChunkGenerator;
 import java.util.HashMap;
 import java.util.List;
@@ -740,6 +741,13 @@ public interface World {
     public Difficulty getDifficulty();
 
     /**
+     * Gets the folder of this world on disk.
+     *
+     * @return The folder of this world.
+     */
+    public File getWorldFolder();
+
+    /**
      * Represents various map environment types that a world may be
      */
     public enum Environment {
@@ -752,9 +760,9 @@ public interface World {
          */
         NETHER(-1),
         /**
-         * Represents a sky-lands based map ("heaven")
+         * Represents the "end" map
          */
-        SKYLANDS(1);
+        THE_END(1);
 
         private final int id;
         private static final Map<Integer, Environment> lookup = new HashMap<Integer, Environment>();
