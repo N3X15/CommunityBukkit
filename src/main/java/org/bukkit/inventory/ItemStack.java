@@ -17,7 +17,7 @@ public class ItemStack implements Serializable, ConfigurationSerializable {
     private int type;
     private int amount = 0;
     private MaterialData data = null;
-    private int durability = 0;
+    private short durability = 0;
     private Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
 
     public ItemStack(final int type) {
@@ -36,21 +36,21 @@ public class ItemStack implements Serializable, ConfigurationSerializable {
         this(type.getId(), amount);
     }
 
-    public ItemStack(final int type, final int amount, final int damage) {
+    public ItemStack(final int type, final int amount, final short damage) {
         this(type, amount, damage, null);
     }
 
-    public ItemStack(final Material type, final int amount, final int damage) {
+    public ItemStack(final Material type, final int amount, final short damage) {
         this(type.getId(), amount, damage);
     }
 
-    public ItemStack(final int type, final int amount, final int damage, final Byte data) {
+    public ItemStack(final int type, final int amount, final short damage, final Byte data) {
         this.type = type;
         this.amount = amount;
         this.durability = damage;
         if (data != null) {
             createData(data);
-            this.durability = data;
+            //this.durability = data; // CraftBukkit - From SwearWord
         }
     }
 
@@ -154,7 +154,7 @@ public class ItemStack implements Serializable, ConfigurationSerializable {
      *
      * @param durability Durability of this item
      */
-    public void setDurability(final int durability) {
+    public void setDurability(final short durability) {
         this.durability = durability;
     }
 
@@ -163,7 +163,7 @@ public class ItemStack implements Serializable, ConfigurationSerializable {
      *
      * @return Durability of this item
      */
-    public int getDurability() {
+    public short getDurability() {
         return durability;
     }
 
