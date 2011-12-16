@@ -937,6 +937,21 @@ public class JavaPluginLoader implements PluginLoader {
                     ((InventoryListener) listener).onFurnaceBurn((FurnaceBurnEvent) event);
                 }
             };
+            
+        case BIOME_GENERATE:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((WorldListener) listener).onBiomeGenerate((BiomesInChunkEvent) event);
+                }
+            };
+
+            
+        case BIOME_CLIMATE:
+            return new EventExecutor() {
+                public void execute(Listener listener, Event event) {
+                    ((WorldListener) listener).onBiomeClimate((BiomeClimateEvent) event);
+                }
+            };
 
         // Custom Events
         case CUSTOM_EVENT:

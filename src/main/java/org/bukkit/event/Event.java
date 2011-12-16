@@ -587,6 +587,7 @@ public abstract class Event implements Serializable {
          * @see org.bukkit.event.world.WorldUnloadEvent
          */
         WORLD_UNLOAD (Category.WORLD),
+        BIOME_GENERATE (Category.WORLD),
         /**
          * Called when world attempts to create a matching end to a portal
          *
@@ -742,6 +743,7 @@ public abstract class Event implements Serializable {
         /**
          * WEATHER EVENTS
          */
+        BIOME_CLIMATE(Category.WORLD),
 
         /**
          * Called when a lightning entity strikes somewhere

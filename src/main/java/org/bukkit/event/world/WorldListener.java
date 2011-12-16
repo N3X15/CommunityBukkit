@@ -77,4 +77,8 @@ public class WorldListener implements Listener {
      * @param event Relevant event details
      */
     public void onStructureGrow(StructureGrowEvent event) {}
+
+    public void onBiomeGenerate(BiomesInChunkEvent event) {}
+
+    public void onBiomeClimate(BiomeClimateEvent event) {}
 }
