@@ -68,7 +68,6 @@ public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     }
     
     public float[] getClimateData() {
-        // TODO Auto-generated method stub
         return climateData;
     }
     
