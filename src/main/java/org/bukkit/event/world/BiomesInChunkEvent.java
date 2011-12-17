@@ -67,4 +67,12 @@ public class BiomesInChunkEvent extends Event implements Cancellable {
         cancelled=cancel;
     }
     
+    public Biome getBiome(int x, int z) {
+        return biomes[z + x * 16];
+    }
+    
+    public void setBiome(int x, int z, Biome v) {
+        biomes[z + x * 16] = v;
+    }
+    
 }
