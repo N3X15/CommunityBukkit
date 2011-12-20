@@ -532,4 +532,10 @@ public interface Server {
      * @return Array containing all players
      */
     public OfflinePlayer[] getOfflinePlayers();
+
+    public boolean isOverridingBiome();
+
+    public float getTemperatureOverride();
+
+    public float getHumidityOverride();
 }
