@@ -12,12 +12,13 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.util.Vector;
 
 /**
  * Represents a world, which may contain entities, chunks and blocks
  */
-public interface World {
+public interface World extends PluginMessageRecipient {
 
     /**
      * Gets the {@link Block} at the given coordinates
@@ -552,12 +553,14 @@ public interface World {
 
     /**
      * Gets the current PVP setting for this world.
+     *
      * @return True if PVP is enabled
      */
     public boolean getPVP();
 
     /**
      * Sets the PVP setting for this world.
+     *
      * @param pvp True/False whether PVP should be Enabled.
      */
     public void setPVP(boolean pvp);
@@ -613,7 +616,8 @@ public interface World {
 
     /**
      * Get empty chunk snapshot (equivalent to all air blocks), optionally including valid biome
-     * data.  Used for representing an ungenerated chunk, or for fetching only biome data without loading a chunk.
+     * data. Used for representing an ungenerated chunk, or for fetching only biome data without loading a chunk.
+     *
      * @param x - chunk x coordinate
      * @param z - chunk z coordinate
      * @param includeBiome - if true, snapshot includes per-coordinate biome type
@@ -706,10 +710,10 @@ public interface World {
     public boolean getKeepSpawnInMemory();
 
     /**
-    * Sets whether the world's spawn area should be kept loaded into memory or not.
-    *
-    * @param keepLoaded if true then the world's spawn area will be kept loaded into memory.
-    */
+     * Sets whether the world's spawn area should be kept loaded into memory or not.
+     *
+     * @param keepLoaded if true then the world's spawn area will be kept loaded into memory.
+     */
     public void setKeepSpawnInMemory(boolean keepLoaded);
 
     /**

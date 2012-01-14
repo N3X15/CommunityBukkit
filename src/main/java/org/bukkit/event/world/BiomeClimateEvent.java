@@ -3,7 +3,6 @@ package org.bukkit.event.world;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.world.BiomeClimateEvent.ClimateType;
 
 public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     /**
@@ -16,16 +15,15 @@ public class BiomeClimateEvent extends WorldEvent implements Cancellable {
         WETNESS
     }
     
-    private int x;
-    private int z;
-    private int rx;
-    private int rz;
-    private float[] climateData;
+    private final int x;
+    private final int z;
+    private final int rx;
+    private final int rz;
+    private final float[] climateData;
     private boolean cancelled = false;
-    private ClimateType climateType;
+    private final ClimateType climateType;
     
-    public BiomeClimateEvent(ClimateType type, World world, int x, int z,
-            int rx, int rz, float[] climatedata) {
+    public BiomeClimateEvent(ClimateType type, World world, int x, int z, int rx, int rz, float[] climatedata) {
         super(Type.BIOME_CLIMATE, world);
         this.climateType = type;
         this.climateData = climatedata;

@@ -12,12 +12,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.map.MapView;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 
 /**
  * Represents a player, connected or not
  *
  */
-public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
+public interface Player extends HumanEntity, CommandSender, OfflinePlayer, PluginMessageRecipient {
     /**
      * Gets the "friendly" name to display of this player. This may include color.
      *
@@ -37,7 +38,7 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
      * @param name The new display name.
      */
     public void setDisplayName(String name);
-    
+
     /**
      * Gets the name that is shown on the player list.
      *
@@ -49,6 +50,7 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
      * Sets the name that is shown on the in-game player list.
      * <p>
      * The name cannot be longer than 16 characters, but {@link ChatColor} is supported.
+     * Colors do not count towards the length limitation.
      * <p>
      * If the value is null, the name will be identical to {@link #getName()}.
      * <p>
@@ -82,6 +84,7 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
 
     /**
      * Gets the socket address of this player
+     *
      * @return the player's address
      */
     public InetSocketAddress getAddress();
@@ -117,12 +120,14 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
 
     /**
      * Returns if the player is in sneak mode
+     *
      * @return true if player is in sneak mode
      */
     public boolean isSneaking();
 
     /**
      * Sets the sneak mode the player
+     *
      * @param sneak true if player should appear sneaking
      */
     public void setSneaking(boolean sneak);
@@ -214,7 +219,7 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer {
     /**
      * Send a chunk change. This fakes a chunk change packet for a user at
      * a certain location. The updated cuboid must be entirely within a single
-     * chunk.  This will not actually change the world in any way.
+     * chunk. This will not actually change the world in any way.
      *
      * At least one of the dimensions of the cuboid must be even. The size of the
      * data buffer must be 2.5*sx*sy*sz and formatted in accordance with the Packet51

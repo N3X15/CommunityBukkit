@@ -118,7 +118,7 @@ public final class SimplePluginManager implements PluginManager {
         boolean allFailed = false;
         boolean finalPass = false;
 
-        LinkedList<File> filesList = new LinkedList(Arrays.asList(files));
+        LinkedList<File> filesList = new LinkedList<File>(Arrays.asList(files));
 
         if (!(server.getUpdateFolder().equals(""))) {
             updateDirectory = new File(directory, server.getUpdateFolder());
@@ -285,7 +285,7 @@ public final class SimplePluginManager implements PluginManager {
     }
 
     public void disablePlugins() {
-        for (Plugin plugin: getPlugins()) {
+        for (Plugin plugin : getPlugins()) {
             disablePlugin(plugin);
         }
     }
@@ -336,7 +336,9 @@ public final class SimplePluginManager implements PluginManager {
         if (eventListeners != null) {
             for (RegisteredListener registration : eventListeners) {
                 try {
+                    long start = System.nanoTime();
                     registration.callEvent(event);
+                    registration.getPlugin().incTiming(event.getType(), System.nanoTime() - start);
                 } catch (AuthorNagException ex) {
                     Plugin plugin = registration.getPlugin();
 
@@ -371,6 +373,18 @@ public final class SimplePluginManager implements PluginManager {
      * @param plugin Plugin to register
      */
     public void registerEvent(Event.Type type, Listener listener, Priority priority, Plugin plugin) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type cannot be null");
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
+        if (priority == null) {
+            throw new IllegalArgumentException("Priority cannot be null");
+        }
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin cannot be null");
+        }
         if (!plugin.isEnabled()) {
             throw new IllegalPluginAccessException("Plugin attempted to register " + type + " while not enabled");
         }
@@ -388,6 +402,18 @@ public final class SimplePluginManager implements PluginManager {
      * @param plugin Plugin to register
      */
     public void registerEvent(Event.Type type, Listener listener, EventExecutor executor, Priority priority, Plugin plugin) {
+        if (type == null) {
+            throw new IllegalArgumentException("Type cannot be null");
+        }
+        if (listener == null) {
+            throw new IllegalArgumentException("Listener cannot be null");
+        }
+        if (priority == null) {
+            throw new IllegalArgumentException("Priority cannot be null");
+        }
+        if (plugin == null) {
+            throw new IllegalArgumentException("Plugin cannot be null");
+        }
         if (!plugin.isEnabled()) {
             throw new IllegalPluginAccessException("Plugin attempted to register " + type + " while not enabled");
         }

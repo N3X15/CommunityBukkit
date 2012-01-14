@@ -20,12 +20,14 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.ServicesManager;
+import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.scheduler.BukkitScheduler;
 
 /**
  * Represents a server implementation
  */
-public interface Server {
+public interface Server extends PluginMessageRecipient {
     /**
      * Used for all administrative messages, such as an operator using a command.
      *
@@ -53,10 +55,10 @@ public interface Server {
      * @return version of this server implementation
      */
     public String getVersion();
-    
+
     /**
      * Gets the Bukkit version that this server is running.
-     * 
+     *
      * @return Version of Bukkit
      */
     public String getBukkitVersion();
@@ -110,7 +112,7 @@ public interface Server {
      * @return The ID of this server
      */
     public String getServerId();
-    
+
     /**
      * Gets whether this server allows the End or not.
      *
@@ -304,7 +306,7 @@ public interface Server {
      */
     public World createWorld(WorldCreator creator);
 
-     /**
+    /**
      * Unloads a world with the given name.
      *
      * @param name Name of the world to unload
@@ -398,6 +400,7 @@ public interface Server {
 
     /**
      * Adds a recipe to the crafting manager.
+     *
      * @param recipe The recipe to add.
      * @return True to indicate that the recipe was added.
      */
@@ -532,6 +535,13 @@ public interface Server {
      * @return Array containing all players
      */
     public OfflinePlayer[] getOfflinePlayers();
+
+    /**
+     * Gets the {@link Messenger} responsible for this server.
+     *
+     * @return Messenger responsible for this server.
+     */
+    public Messenger getMessenger();
 
     public boolean isOverridingBiome();
 
