@@ -3,12 +3,14 @@ package org.bukkit.event.player;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 /**
  * Called when a player throws an egg and it might hatch
  */
 @SuppressWarnings("serial")
 public class PlayerEggThrowEvent extends PlayerEvent {
+    private static final HandlerList handlers = new HandlerList();
     private Egg egg;
     private boolean hatching;
     private CreatureType hatchType;
@@ -72,7 +74,7 @@ public class PlayerEggThrowEvent extends PlayerEvent {
     /**
      * Get the number of mob hatches from the egg. By default the number
      * will be he number the server would've done
-     *
+     * <p />
      * 7/8 chance of being 0
      * 31/256 ~= 1/8 chance to be 1
      * 1/256 chance to be 4
@@ -85,7 +87,7 @@ public class PlayerEggThrowEvent extends PlayerEvent {
 
     /**
      * Change the number of mobs coming out of the hatched egg
-     *
+     * <p />
      * The boolean hatching will override this number.
      * Ie. If hatching = false, this number will not matter
      *
@@ -93,5 +95,14 @@ public class PlayerEggThrowEvent extends PlayerEvent {
      */
     public void setNumHatches(byte numHatches) {
         this.numHatches = numHatches;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

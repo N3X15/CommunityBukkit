@@ -4,25 +4,40 @@
     <artifactId>bukkit</artifactId>
     <version>1.1-R1-7CLAMS-SNAPSHOT</version>
     <name>Bukkit</name>
+    <url>http://www.bukkit.org</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>http://www.bukkit.org</url>
+
     <scm>
         <developerConnection>scm:git:git@github.com:Bukkit/Bukkit.git</developerConnection>
         <connection>scm:git:git://github.com/Bukkit/Bukkit.git</connection>
         <url>https://github.com/Bukkit/Bukkit/tree/master/</url>
     </scm>
+
     <ciManagement>
         <system>jenkins</system>
         <url>http://ci.bukkit.org</url>
     </ciManagement>
+
     <distributionManagement>
         <site>
             <id>jd.bukkit.org</id>
             <url>file:///home/javadocs/public_html/</url>
         </site>
+        <repository>
+            <id>repobo-rel</id>
+            <name>repo.bukkit.org Releases</name>
+            <url>http://repo.bukkit.org/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>repobo-snap</id>
+            <name>repo.bukkit.org Snapshots</name>
+            <url>http://repo.bukkit.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
     </distributionManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -103,14 +118,33 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>10.0</version>
+            <version>10.0.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.3</version>
+        </dependency>
+
+        <!-- testing -->
+        <dependency>
             <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.9</version>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hamcrest-core</artifactId>
+                    <groupId>org.hamcrest</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-library</artifactId>
+            <version>1.2.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

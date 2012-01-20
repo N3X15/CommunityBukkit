@@ -4,12 +4,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 /**
  * Holds information for player movement events
  */
 @SuppressWarnings("serial")
 public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
+    private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
     private Location from;
     private Location to;
@@ -29,7 +31,7 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
     /**
      * Gets the cancellation state of this event. A cancelled event will not
      * be executed in the server, but will still pass to other plugins
-     *
+     * <p />
      * If a move or teleport event is cancelled, the player will be moved or
      * teleported back to the Location as defined by getFrom(). This will not
      * fire an event
@@ -43,7 +45,7 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
     /**
      * Sets the cancellation state of this event. A cancelled event will not
      * be executed in the server, but will still pass to other plugins
-     *
+     * <p />
      * If a move or teleport event is cancelled, the player will be moved or
      * teleported back to the Location as defined by getFrom(). This will not
      * fire an event
@@ -88,5 +90,14 @@ public class PlayerMoveEvent extends PlayerEvent implements Cancellable {
      */
     public void setTo(Location to) {
         this.to = to;
+    }
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }

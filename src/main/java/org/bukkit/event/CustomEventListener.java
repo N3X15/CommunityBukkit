@@ -1,11 +1,11 @@
 package org.bukkit.event;
 
-import org.bukkit.event.Listener;
-
 /**
  * Handles all custom events
  */
+@Deprecated
 public class CustomEventListener implements Listener {
+    private static final HandlerList handlers = new HandlerList();
     public CustomEventListener() {}
 
     /**

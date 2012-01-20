@@ -2,6 +2,7 @@ package org.bukkit;
 
 import java.io.File;
 import org.bukkit.generator.ChunkGenerator;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +83,6 @@ public interface World extends PluginMessageRecipient {
      *
      * @param x X-coordinate of the block
      * @param z Z-coordinate of the block
-     *
      * @return Highest non-empty block
      */
     public Block getHighestBlockAt(int x, int z);
@@ -91,7 +91,6 @@ public interface World extends PluginMessageRecipient {
      * Gets the highest non-empty block at the given coordinates
      *
      * @param location Coordinates to get the highest block
-     *
      * @return Highest non-empty block
      */
     public Block getHighestBlockAt(Location location);
@@ -154,7 +153,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Loads the {@link Chunk} at the specified coordinates
-     *
+     * <p />
      * If the chunk does not exist, it will be generated.
      * This method is analogous to {@link #loadChunk(int, int, boolean)} where generate is true.
      *
@@ -175,7 +174,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Safely unloads and saves the {@link Chunk} at the specified coordinates
-     *
+     * <p />
      * This method is analogous to {@link #unloadChunk(int, int, boolean, boolean)} where safe and saveis true
      *
      * @param chunk the chunk to unload
@@ -185,7 +184,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Safely unloads and saves the {@link Chunk} at the specified coordinates
-     *
+     * <p />
      * This method is analogous to {@link #unloadChunk(int, int, boolean, boolean)} where safe and saveis true
      *
      * @param x X-coordinate of the chunk
@@ -196,7 +195,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Safely unloads and optionally saves the {@link Chunk} at the specified coordinates
-     *
+     * <p />
      * This method is analogous to {@link #unloadChunk(int, int, boolean, boolean)} where save is true
      *
      * @param x X-coordinate of the chunk
@@ -219,7 +218,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Safely queues the {@link Chunk} at the specified coordinates for unloading
-     *
+     * <p />
      * This method is analogous to {@link #unloadChunkRequest(int, int, boolean)} where safe is true
      *
      * @param x X-coordinate of the chunk
@@ -344,6 +343,13 @@ public interface World extends PluginMessageRecipient {
     public List<LivingEntity> getLivingEntities();
 
     /**
+     * Get a collection of all entities in this World matching the given class/interface
+     *
+     * @return A List of all Entities currently residing in this world that match the given class/interface
+     */
+    public <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes);
+
+    /**
      * Get a list of all players in this World
      *
      * @return A list of all Players currently residing in this world
@@ -366,7 +372,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Gets a semi-unique identifier for this world.
-     *
+     * <p />
      * While it is highly unlikely that this may be shared with another World,
      * it is not guaranteed to be unique
      *
@@ -395,7 +401,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Gets the relative in-game time of this world.
-     *
+     * <p />
      * The relative time is analogous to hours * 1000
      *
      * @return The current relative time
@@ -405,7 +411,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Sets the relative in-game time on the server.
-     *
+     * <p />
      * The relative time is analogous to hours * 1000
      * <br /><br />
      * Note that setting the relative time below the current relative time will
@@ -650,43 +656,40 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Gets the biome for the given block coordinates.
-     *
+     * <p />
      * It is safe to run this method when the block does not exist, it will not create the block.
      *
      * @param x X coordinate of the block
      * @param z Z coordinate of the block
-     *
      * @return Biome of the requested block
      */
     public Biome getBiome(int x, int z);
 
     /**
      * Gets the temperature for the given block coordinates.
-     *
+     * <p />
      * It is safe to run this method when the block does not exist, it will not create the block.
      *
      * @param x X coordinate of the block
      * @param z Z coordinate of the block
-     *
      * @return Temperature of the requested block
      */
     public double getTemperature(int x, int z);
 
     /**
      * Gets the humidity for the given block coordinates.
-     *
+     * <p />
      * It is safe to run this method when the block does not exist, it will not create the block.
      *
      * @param x X coordinate of the block
      * @param z Z coordinate of the block
-     *
      * @return Humidity of the requested block
      */
     public double getHumidity(int x, int z);
 
     /**
      * Gets the maximum height of this world.
-     *
+     * <p />
      * If the max height is 100, there are only blocks from y=0 to y=99.
      *
      * @return Maximum height of the world
@@ -695,7 +698,7 @@ public interface World extends PluginMessageRecipient {
 
     /**
      * Gets the sea level for this world.
-     *
+     * <p />
      * This is often half of {@link #getMaxHeight()}
      *
      * @return Sea level
@@ -750,6 +753,13 @@ public interface World extends PluginMessageRecipient {
      * @return The folder of this world.
      */
     public File getWorldFolder();
+
+    /**
+     * Gets the type of this world.
+     *
+     * @return Type of this world.
+     */
+    public WorldType getWorldType();
 
     /**
      * Represents various map environment types that a world may be

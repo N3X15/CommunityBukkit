@@ -3,6 +3,8 @@ package org.bukkit.plugin;
 import com.avaje.ebean.EbeanServer;
 import java.io.File;
 import java.io.InputStream;
+import java.util.logging.Logger;
+
 import org.bukkit.Server;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -149,9 +151,11 @@ public interface Plugin extends CommandExecutor {
      */
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id);
 
-    public long getTiming(Event.Type type);
-
-    public void incTiming(Event.Type type, long delta);
-
-    public void resetTimings();
+    /**
+     * Returns the primary logger associated with this server instance. The returned logger automatically
+     * tags all log messages with the plugin's name.
+     *
+     * @return Logger associated with this server
+     */
+    public Logger getLogger();
 }

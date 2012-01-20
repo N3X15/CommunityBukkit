@@ -1,7 +1,5 @@
 package org.bukkit.configuration;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -189,7 +187,7 @@ public class MemorySection implements ConfigurationSection {
             if (value == null) {
                 map.remove(key);
             } else {
-                map.put(key, prepForStorage(value));
+                map.put(key, value);
             }
         } else {
             section.set(key, value);
@@ -452,7 +450,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<String>(0);
         }
 
         List<String> result = new ArrayList<String>();
@@ -474,7 +472,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Integer>(0);
         }
 
         List<Integer> result = new ArrayList<Integer>();
@@ -515,7 +513,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Boolean>(0);
         }
 
         List<Boolean> result = new ArrayList<Boolean>();
@@ -543,7 +541,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Double>(0);
         }
 
         List<Double> result = new ArrayList<Double>();
@@ -584,7 +582,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Float>(0);
         }
 
         List<Float> result = new ArrayList<Float>();
@@ -625,7 +623,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Long>(0);
         }
 
         List<Long> result = new ArrayList<Long>();
@@ -666,7 +664,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Byte>(0);
         }
 
         List<Byte> result = new ArrayList<Byte>();
@@ -707,7 +705,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Character>(0);
         }
 
         List<Character> result = new ArrayList<Character>();
@@ -749,7 +747,7 @@ public class MemorySection implements ConfigurationSection {
         List<Object> list = getList(path);
 
         if (list == null) {
-            return null;
+            return new ArrayList<Short>(0);
         }
 
         List<Short> result = new ArrayList<Short>();
@@ -905,31 +903,11 @@ public class MemorySection implements ConfigurationSection {
         return val instanceof ConfigurationSection;
     }
 
-    protected Object prepForStorage(Object input) {
-        if (input == null) {
-            throw new IllegalArgumentException("Cannot store null");
-        }
-
-        if (isPrimitiveWrapper(input) || isNaturallyStorable(input)) {
-            return input;
-        } else if (input instanceof ConfigurationSerializable) {
-            return input;
-        }
-
-        throw new IllegalArgumentException("Cannot store " + input + " into " + this + ", unsupported class");
-    }
-
     protected boolean isPrimitiveWrapper(Object input) {
         return input instanceof Integer || input instanceof Boolean ||
                 input instanceof Character || input instanceof Byte ||
                 input instanceof Short || input instanceof Double ||
                 input instanceof Long || input instanceof Float;
-    }
-
-    protected boolean isNaturallyStorable(Object input) {
-        return input instanceof List || input instanceof Iterable ||
-                input instanceof String || input instanceof File ||
-                input instanceof Enum;
     }
 
     protected Object getDefault(String path) {
