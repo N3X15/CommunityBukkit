@@ -3,12 +3,14 @@ package org.bukkit.event.world;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
 
 public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     /**
      * 
      */
     private static final long serialVersionUID = 1912052838696287046L;
+    private static final HandlerList handlers = new HandlerList();
     
     public enum ClimateType {
         TEMPERATURE,
@@ -75,5 +77,14 @@ public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     
     public void setClimate(int x, int z, float v) {
         climateData[z + x * 16] = v;
+    }
+    
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+    
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }
