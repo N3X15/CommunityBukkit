@@ -2,8 +2,8 @@ package org.bukkit.plugin;
 
 import java.io.File;
 import java.util.Set;
+
 import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.permissions.Permissible;
@@ -97,31 +97,6 @@ public interface PluginManager {
     public void callEvent(Event event);
 
     /**
-     * Registers the given event to the specified listener
-     *
-     * @param type EventType to register
-     * @param listener Listener to register
-     * @param priority Priority of this event
-     * @param plugin Plugin to register
-     * @deprecated see PluginManager#registerEvents
-     */
-    @Deprecated
-    public void registerEvent(Event.Type type, Listener listener, Priority priority, Plugin plugin);
-
-    /**
-     * Registers the given event to the specified executor
-     *
-     * @param type EventType to register
-     * @param listener Listener to register
-     * @param executor EventExecutor to register
-     * @param priority Priority of this event
-     * @param plugin Plugin to register
-     * @deprecated see PluginManager#registerEvent(Class, Listener, EventPriority, EventExecutor, Plugin)
-     */
-    @Deprecated
-    public void registerEvent(Event.Type type, Listener listener, EventExecutor executor, Priority priority, Plugin plugin);
-
-    /**
      * Registers all the events in the given listener class
      *
      * @param listener Listener to register
@@ -139,6 +114,18 @@ public interface PluginManager {
      * @param plugin Plugin to register
      */
     public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor, Plugin plugin);
+
+    /**
+     * Registers the specified executor to the given event class
+     *
+     * @param event Event type to register
+     * @param listener Listener to register
+     * @param priority Priority to register this event at
+     * @param executor EventExecutor to register
+     * @param plugin Plugin to register
+     * @param ignoreCancelled Whether to pass cancelled events or not
+     */
+    public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority priority, EventExecutor executor, Plugin plugin, boolean ignoreCancelled);
 
     /**
      * Enables the specified plugin

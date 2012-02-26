@@ -7,21 +7,18 @@ import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
  * @author Rob
  * 
  */
-public class BiomesInChunkEvent extends Event implements Cancellable {
+public class BiomesInChunkEvent extends WorldEvent implements Cancellable {
     
     /**
      * 
      */
     private static final HandlerList handlers = new HandlerList();
-    private static final long serialVersionUID = 233532555114423982L;
-    private final World world;
     private Biome[] biomes;
     private boolean cancelled = false;
     private final int x;
@@ -30,21 +27,16 @@ public class BiomesInChunkEvent extends Event implements Cancellable {
     private final int rz;
     
     public BiomesInChunkEvent(World world, int x, int z, int rx, int rz, Biome[] biomes) {
-        super(Type.BIOME_GENERATE);
+        super(world);
         this.biomes = biomes;
-        this.world = world;
         this.x = x;
         this.z = z;
         this.rx = rx;
         this.rz = rz;
     }
     
-    public World getWorld() {
-        return world;
-    }
-    
     public Chunk getChunk() {
-        return world.getChunkAt(x >> 4, z >> 4);
+        return this.getWorld().getChunkAt(x >> 4, z >> 4);
     }
     
     public int getX() {

@@ -310,6 +310,16 @@ public interface World extends PluginMessageRecipient {
      * @param type The creature to spawn
      * @return Resulting LivingEntity of this method, or null if it was unsuccessful
      */
+    public LivingEntity spawnCreature(Location loc, EntityType type);
+
+    /**
+     * Creates a creature at the given {@link Location}
+     *
+     * @param loc The location to spawn the creature
+     * @param type The creature to spawn
+     * @return Resulting LivingEntity of this method, or null if it was unsuccessful
+     */
+    @Deprecated
     public LivingEntity spawnCreature(Location loc, CreatureType type);
 
     /**
@@ -347,7 +357,22 @@ public interface World extends PluginMessageRecipient {
      *
      * @return A List of all Entities currently residing in this world that match the given class/interface
      */
+    @Deprecated
     public <T extends Entity> Collection<T> getEntitiesByClass(Class<T>... classes);
+
+    /**
+     * Get a collection of all entities in this World matching the given class/interface
+     *
+     * @return A List of all Entities currently residing in this world that match the given class/interface
+     */
+    public <T extends Entity> Collection<T> getEntitiesByClass(Class<T> cls);
+
+    /**
+     * Get a collection of all entities in this World matching any of the given classes/interfaces
+     *
+     * @return A List of all Entities currently residing in this world that match one or more of the given classes/interfaces
+     */
+    public Collection<Entity> getEntitiesByClasses(Class<?>... classes);
 
     /**
      * Get a list of all players in this World
@@ -369,18 +394,6 @@ public interface World extends PluginMessageRecipient {
      * @return Unique ID of this world.
      */
     public UUID getUID();
-
-    /**
-     * Gets a semi-unique identifier for this world.
-     * <p />
-     * While it is highly unlikely that this may be shared with another World,
-     * it is not guaranteed to be unique
-     *
-     * @deprecated Replaced with {@link #getUID()}
-     * @return Id of this world
-     */
-    @Deprecated
-    public long getId();
 
     /**
      * Gets the default spawn {@link Location} of this world
@@ -767,6 +780,90 @@ public interface World extends PluginMessageRecipient {
      * @return True if structures are being generated.
      */
     public boolean canGenerateStructures();
+
+    /**
+     * Gets the world's ticks per animal spawns value
+     * <p />
+     * This value determines how many ticks there are between attempts to spawn animals.
+     * <p />
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn animals in this world every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn animals in this world every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p />
+     * <b>Note:</b>
+     * If set to 0, animal spawning will be disabled for this world. We recommend using {@link #setSpawnFlags(boolean, boolean)} to control this instead.
+     * <p />
+     * Minecraft default: 400.
+     *
+     * @return The world's ticks per animal spawns value
+     */
+    public long getTicksPerAnimalSpawns();
+
+    /**
+     * Sets the world's ticks per animal spawns value
+     * <p />
+     * This value determines how many ticks there are between attempts to spawn animals.
+     * <p />
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn animals in this world every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn animals in this world every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p />
+     * <b>Note:</b>
+     * If set to 0, animal spawning will be disabled for this world. We recommend using {@link #setSpawnFlags(boolean, boolean)} to control this instead.
+     * <p />
+     * Minecraft default: 400.
+     *
+     * @param ticksPerAnimalSpawns the ticks per animal spawns value you want to set the world to
+     */
+    public void setTicksPerAnimalSpawns(int ticksPerAnimalSpawns);
+
+    /**
+     * Gets the world's ticks per monster spawns value
+     * <p />
+     * This value determines how many ticks there are between attempts to spawn monsters.
+     * <p />
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn monsters in this world every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn monsters in this world every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p />
+     * <b>Note:</b>
+     * If set to 0, monsters spawning will be disabled for this world. We recommend using {@link #setSpawnFlags(boolean, boolean)} to control this instead.
+     * <p />
+     * Minecraft default: 1.
+     *
+     * @return The world's ticks per monster spawns value
+     */
+    public long getTicksPerMonsterSpawns();
+
+    /**
+     * Sets the world's ticks per monster spawns value
+     * <p />
+     * This value determines how many ticks there are between attempts to spawn monsters.
+     * <p />
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn monsters in this world on every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn monsters in this world every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p />
+     * <b>Note:</b>
+     * If set to 0, monsters spawning will be disabled for this world. We recommend using {@link #setSpawnFlags(boolean, boolean)} to control this instead.
+     * <p />
+     * Minecraft default: 1.
+     *
+     * @param ticksPerMonsterSpawns the ticks per monster spawns value you want to set the world to
+     */
+    public void setTicksPerMonsterSpawns(int ticksPerMonsterSpawns);
 
     /**
      * Represents various map environment types that a world may be

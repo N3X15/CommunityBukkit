@@ -8,14 +8,13 @@ import org.bukkit.event.HandlerList;
 /**
  * Thrown when a LivingEntity is tamed
  */
-@SuppressWarnings("serial")
 public class EntityTameEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private AnimalTamer owner;
+    private final AnimalTamer owner;
 
-    public EntityTameEvent(Entity entity, AnimalTamer owner) {
-        super(Type.ENTITY_TAME, entity);
+    public EntityTameEvent(final Entity entity, final AnimalTamer owner) {
+        super(entity);
         this.owner = owner;
     }
 

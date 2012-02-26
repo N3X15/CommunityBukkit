@@ -9,7 +9,6 @@ public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     /**
      * 
      */
-    private static final long serialVersionUID = 1912052838696287046L;
     private static final HandlerList handlers = new HandlerList();
     
     public enum ClimateType {
@@ -26,7 +25,7 @@ public class BiomeClimateEvent extends WorldEvent implements Cancellable {
     private final ClimateType climateType;
     
     public BiomeClimateEvent(ClimateType type, World world, int x, int z, int rx, int rz, float[] climatedata) {
-        super(Type.BIOME_CLIMATE, world);
+        super(world);
         this.climateType = type;
         this.climateData = climatedata;
         this.x = x;

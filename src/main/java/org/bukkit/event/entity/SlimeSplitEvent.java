@@ -7,14 +7,13 @@ import org.bukkit.event.HandlerList;
 /**
  * Called when a Slime splits into smaller Slimes upon death
  */
-@SuppressWarnings("serial")
 public class SlimeSplitEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel;
     private int count;
 
-    public SlimeSplitEvent(Entity what, int count) {
-        super(Type.SLIME_SPLIT, what);
+    public SlimeSplitEvent(final Entity what, final int count) {
+        super(what);
         this.cancel = false;
         this.count = count;
     }

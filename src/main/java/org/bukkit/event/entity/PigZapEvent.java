@@ -7,16 +7,14 @@ import org.bukkit.event.HandlerList;
 /**
  * Stores data for pigs being zapped
  */
-@SuppressWarnings("serial")
 public class PigZapEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-
     private boolean canceled;
-    private Entity pigzombie;
-    private Entity bolt;
+    private final Entity pigzombie;
+    private final Entity bolt;
 
-    public PigZapEvent(Entity pig, Entity bolt, Entity pigzombie) {
-        super(Type.PIG_ZAP, pig);
+    public PigZapEvent(final Entity pig, final Entity bolt, final Entity pigzombie) {
+        super(pig);
         this.bolt = bolt;
         this.pigzombie = pigzombie;
     }

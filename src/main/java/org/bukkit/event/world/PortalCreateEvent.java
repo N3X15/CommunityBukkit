@@ -11,14 +11,13 @@ import java.util.Collection;
 /**
  * Called when the world attempts to create a matching end to a portal
  */
-@SuppressWarnings("serial")
 public class PortalCreateEvent extends WorldEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancel = false;
-    private ArrayList<Block> blocks = new ArrayList<Block>();
+    private final ArrayList<Block> blocks = new ArrayList<Block>();
 
     public PortalCreateEvent(final Collection<Block> blocks, final World world) {
-        super(Type.PORTAL_CREATE, world);
+        super(world);
         this.blocks.addAll(blocks);
     }
 

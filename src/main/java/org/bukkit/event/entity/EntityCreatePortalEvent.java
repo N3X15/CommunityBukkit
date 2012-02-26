@@ -10,15 +10,14 @@ import org.bukkit.event.HandlerList;
 /**
  * Thrown when a Living Entity creates a portal in a world.
  */
-@SuppressWarnings("serial")
 public class EntityCreatePortalEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
-    private List<BlockState> blocks;
+    private final List<BlockState> blocks;
     private boolean cancelled = false;
     private PortalType type = PortalType.CUSTOM;
 
-    public EntityCreatePortalEvent(Entity what, List<BlockState> blocks, PortalType type) {
-        super(Type.ENTITY_CREATE_PORTAL, what);
+    public EntityCreatePortalEvent(final Entity what, final List<BlockState> blocks, final PortalType type) {
+        super(what);
 
         this.blocks = blocks;
         this.type = type;
@@ -38,7 +37,7 @@ public class EntityCreatePortalEvent extends EntityEvent implements Cancellable 
     }
 
     public void setCancelled(boolean cancel) {
-        this.cancelled = true;
+        this.cancelled = cancel;
     }
 
     /**

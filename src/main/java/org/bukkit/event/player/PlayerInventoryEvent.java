@@ -7,13 +7,12 @@ import org.bukkit.inventory.Inventory;
 /**
  * Represents a player related inventory event
  */
-@SuppressWarnings("serial")
 public class PlayerInventoryEvent extends PlayerEvent {
     private static final HandlerList handlers = new HandlerList();
     protected Inventory inventory;
 
     public PlayerInventoryEvent(final Player player, final Inventory inventory) {
-        super(Type.PLAYER_INVENTORY, player);
+        super(player);
         this.inventory = inventory;
     }
 

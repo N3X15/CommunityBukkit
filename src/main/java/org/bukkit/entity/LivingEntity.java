@@ -1,10 +1,13 @@
 package org.bukkit.entity;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Represents a living entity, such as a monster or player
@@ -87,23 +90,38 @@ public interface LivingEntity extends Entity {
     /**
      * Throws an egg from the entity.
      *
+     * @deprecated Use launchProjectile(Egg.class) instead
      * @return The egg thrown.
      */
+    @Deprecated
     public Egg throwEgg();
 
     /**
      * Throws a snowball from the entity.
      *
+     * @deprecated Use launchProjectile(Snowball.class) instead
      * @return The snowball thrown.
      */
+    @Deprecated
     public Snowball throwSnowball();
 
     /**
      * Shoots an arrow from the entity.
      *
+     * @deprecated Use launchProjectile(Arrow.class) instead
      * @return The arrow shot.
      */
+    @Deprecated
     public Arrow shootArrow();
+
+    /**
+     * Launches a {@link Projectile} from the entity.
+     *
+     * @param projectile Class of the projectile to launch
+     *
+     * @return The launched projectile.
+     */
+    public <T extends Projectile> T launchProjectile(Class<? extends T> projectile);
 
     /**
      * Returns whether this entity is inside a vehicle.
@@ -225,4 +243,53 @@ public interface LivingEntity extends Entity {
      * @return Killer player, or null if none found.
      */
     public Player getKiller();
+
+    /**
+     * Adds the given {@link PotionEffect} to this entity.
+     * Only one potion effect can be present for a given {@link PotionEffectType}.
+     *
+     * @param effect PotionEffect to be added
+     * @return Whether the effect could be added
+     */
+    public boolean addPotionEffect(PotionEffect effect);
+
+    /**
+     * Adds the given {@link PotionEffect} to this entity.
+     * Only one potion effect can be present for a given {@link PotionEffectType}.
+     *
+     * @param effect PotionEffect to be added
+     * @param force Whether conflicting effects should be removed
+     * @return Whether the effect could be added
+     */
+    public boolean addPotionEffect(PotionEffect effect, boolean force);
+
+    /**
+     * Attempts to add all of the given {@link PotionEffect} to this entity.
+     *
+     * @param effects The effects to add
+     * @return Whether all of the effects could be added
+     */
+    public boolean addPotionEffects(Collection<PotionEffect> effects);
+
+    /**
+     * Returns whether the entity already has an existing
+     * effect of the given {@link PotionEffectType} applied to it.
+     *
+     * @param type The potion type to check
+     */
+    public boolean hasPotionEffect(PotionEffectType type);
+
+    /**
+     * Removes any effects present of the given {@link PotionEffectType}.
+     *
+     * @param type The potion type to remove
+     */
+    public void removePotionEffect(PotionEffectType type);
+
+    /**
+     * Returns all currently active {@link PotionEffect}s on this entity.
+     *
+     * @return A collection of {@link PotionEffect}s
+     */
+    public Collection<PotionEffect> getActivePotionEffects();
 }

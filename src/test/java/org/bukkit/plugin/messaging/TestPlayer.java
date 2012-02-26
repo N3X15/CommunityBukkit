@@ -1,6 +1,7 @@
 package org.bukkit.plugin.messaging;
 
 import java.net.InetSocketAddress;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -23,6 +26,8 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 public class TestPlayer implements Player {
@@ -620,5 +625,37 @@ public class TestPlayer implements Player {
 
     public boolean canSee(Player player) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean addPotionEffect(PotionEffect effect) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean addPotionEffect(PotionEffect effect, boolean force) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean addPotionEffects(Collection<PotionEffect> effects) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean hasPotionEffect(PotionEffectType type) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void removePotionEffect(PotionEffectType type) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Collection<PotionEffect> getActivePotionEffects() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public <T extends Projectile> T launchProjectile(Class<? extends T> projectile) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public EntityType getType() {
+        return EntityType.PLAYER;
     }
 }
