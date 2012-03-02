@@ -37,11 +37,9 @@ public class TimingsCommand extends Command {
         boolean separate = "separate".equals(args[0]);
         if ("reset".equals(args[0])) {
             for (HandlerList handlerList : HandlerList.getHandlerLists()) {
-                for (RegisteredListener[] listeners : handlerList.getRegisteredListeners()) {
-                    for (RegisteredListener listener : listeners) {
-                        if (listener instanceof TimedRegisteredListener) {
-                            ((TimedRegisteredListener)listener).reset();
-                        }
+                for (RegisteredListener listener : handlerList.getRegisteredListeners()) {
+                    if (listener instanceof TimedRegisteredListener) {
+                        ((TimedRegisteredListener)listener).reset();
                     }
                 }
             }
@@ -55,9 +53,10 @@ public class TimingsCommand extends Command {
             File timings = new File(timingFolder, "timings.txt");
             File names = null;
             while (timings.exists()) timings = new File(timingFolder, "timings" + (++index) + ".txt");
+            PrintStream fileTimings = null;
+            PrintStream fileNames = null;
             try {
-                PrintStream fileTimings = new PrintStream(timings);
-                PrintStream fileNames = null;
+                fileTimings = new PrintStream(timings);
                 if (separate) {
                     names = new File(timingFolder, "names" + index + ".txt");
                     fileNames = new PrintStream(names);
@@ -89,6 +88,13 @@ public class TimingsCommand extends Command {
                 sender.sendMessage("Timings written to " + timings.getPath());
                 if (separate) sender.sendMessage("Names written to " + names.getPath());
             } catch (IOException e) {
+            } finally {
+                if (fileTimings != null) {
+                    fileTimings.close();
+                }
+                if (fileNames != null) {
+                    fileNames.close();
+                }
             }
         }
         return true;

@@ -13,9 +13,10 @@ import com.avaje.ebean.EbeanServer;
 
 /**
  * Represents a Plugin
+ * <p />
+ * The use of {@link PluginBase} is recommended for actual Implementation
  */
 public interface Plugin extends CommandExecutor {
-
     /**
      * Returns the folder that the plugin data's files are located in. The
      * folder may not yet exist.
@@ -150,4 +151,13 @@ public interface Plugin extends CommandExecutor {
      * @return Logger associated with this server
      */
     public Logger getLogger();
+
+    /**
+     * Returns the name of the plugin.
+     *
+     * This should return the bare name of the plugin and should be used for comparison.
+     *
+     * @return name of the plugin
+     */
+    public String getName();
 }

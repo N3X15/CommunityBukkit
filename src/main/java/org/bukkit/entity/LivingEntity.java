@@ -124,30 +124,6 @@ public interface LivingEntity extends Entity {
     public <T extends Projectile> T launchProjectile(Class<? extends T> projectile);
 
     /**
-     * Returns whether this entity is inside a vehicle.
-     *
-     * @return True if the entity is in a vehicle.
-     */
-    public boolean isInsideVehicle();
-
-    /**
-     * Leave the current vehicle. If the entity is currently in a vehicle
-     * (and is removed from it), true will be returned, otherwise false will
-     * be returned.
-     *
-     * @return True if the entity was in a vehicle.
-     */
-    public boolean leaveVehicle();
-
-    /**
-     * Get the vehicle that this player is inside. If there is no vehicle,
-     * null will be returned.
-     *
-     * @return The current vehicle.
-     */
-    public Vehicle getVehicle();
-
-    /**
      * Returns the amount of air that this entity has remaining, in ticks
      *
      * @return Amount of air remaining
@@ -276,6 +252,7 @@ public interface LivingEntity extends Entity {
      * effect of the given {@link PotionEffectType} applied to it.
      *
      * @param type The potion type to check
+     * @return Whether the player has this potion effect active on them.
      */
     public boolean hasPotionEffect(PotionEffectType type);
 

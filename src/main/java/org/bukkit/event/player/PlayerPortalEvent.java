@@ -18,6 +18,11 @@ public class PlayerPortalEvent extends PlayerTeleportEvent {
         this.travelAgent = pta;
     }
 
+    public PlayerPortalEvent(Player player, Location from, Location to, TravelAgent pta, TeleportCause cause) {
+        super(player, from, to, cause);
+        this.travelAgent = pta;
+    }
+
     public void useTravelAgent(boolean useTravelAgent) {
         this.useTravelAgent = useTravelAgent;
     }

@@ -13,13 +13,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 import org.bukkit.util.Vector;
 
 /**
  * Represents a world, which may contain entities, chunks and blocks
  */
-public interface World extends PluginMessageRecipient {
+public interface World extends PluginMessageRecipient, Metadatable {
 
     /**
      * Gets the {@link Block} at the given coordinates
@@ -355,6 +356,7 @@ public interface World extends PluginMessageRecipient {
     /**
      * Get a collection of all entities in this World matching the given class/interface
      *
+     * @param classes The classes representing the types of entity to match
      * @return A List of all Entities currently residing in this world that match the given class/interface
      */
     @Deprecated
@@ -363,6 +365,7 @@ public interface World extends PluginMessageRecipient {
     /**
      * Get a collection of all entities in this World matching the given class/interface
      *
+     * @param cls The class representing the type of entity to match
      * @return A List of all Entities currently residing in this world that match the given class/interface
      */
     public <T extends Entity> Collection<T> getEntitiesByClass(Class<T> cls);
@@ -370,6 +373,7 @@ public interface World extends PluginMessageRecipient {
     /**
      * Get a collection of all entities in this World matching any of the given classes/interfaces
      *
+     * @param classes The classes representing the types of entity to match
      * @return A List of all Entities currently residing in this world that match one or more of the given classes/interfaces
      */
     public Collection<Entity> getEntitiesByClasses(Class<?>... classes);
@@ -619,7 +623,7 @@ public interface World extends PluginMessageRecipient {
      *
      * @param location the {@link Location} around which players must be to hear the sound
      * @param effect the {@link Effect}
-     * @param data a data bit needed for the RECORD_PLAY, SMOKE, and STEP_SOUND sounds
+     * @param data a data bit needed for some effects
      */
     public void playEffect(Location location, Effect effect, int data);
 
@@ -628,10 +632,29 @@ public interface World extends PluginMessageRecipient {
      *
      * @param location the {@link Location} around which players must be to hear the effect
      * @param effect the {@link Effect}
-     * @param data a data bit needed for the RECORD_PLAY, SMOKE, and STEP effects
+     * @param data a data bit needed for some effects
      * @param radius the radius around the location
      */
     public void playEffect(Location location, Effect effect, int data, int radius);
+
+    /**
+     * Plays an effect to all players within a default radius around a given location.
+     *
+     * @param location the {@link Location} around which players must be to hear the sound
+     * @param effect the {@link Effect}
+     * @param data a data bit needed for some effects
+     */
+    public <T> void playEffect(Location location, Effect effect, T data);
+
+    /**
+     * Plays an effect to all players within a given radius around a location.
+     *
+     * @param location the {@link Location} around which players must be to hear the effect
+     * @param effect the {@link Effect}
+     * @param data a data bit needed for some effects
+     * @param radius the radius around the location
+     */
+    public <T> void playEffect(Location location, Effect effect, T data, int radius);
 
     /**
      * Get empty chunk snapshot (equivalent to all air blocks), optionally including valid biome
@@ -898,6 +921,11 @@ public interface World extends PluginMessageRecipient {
             return id;
         }
 
+        /**
+         * Get an environment by ID
+         * @param id The ID of the environment
+         * @return The environment
+         */
         public static Environment getEnvironment(int id) {
             return lookup.get(id);
         }

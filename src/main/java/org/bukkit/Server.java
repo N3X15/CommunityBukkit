@@ -13,6 +13,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.help.HelpMap;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
@@ -283,7 +287,7 @@ public interface Server extends PluginMessageRecipient {
      * If the world is already loaded, it will just return the equivalent of
      * getWorld(creator.name()).
      *
-     * @param options Options to use when creating the world
+     * @param creator The options to use when creating the world.
      * @return Newly created or loaded world
      */
     public World createWorld(WorldCreator creator);
@@ -560,6 +564,43 @@ public interface Server extends PluginMessageRecipient {
      * @return Messenger responsible for this server.
      */
     public Messenger getMessenger();
+
+    /**
+     * Gets the {@link HelpMap} providing help topics for this server.
+     *
+     * @return The server's HelpMap.
+     */
+    public HelpMap getHelpMap();
+
+    /**
+     * Creates an empty inventory of the specified type. If the type is {@link InventoryType#CHEST},
+     * the new inventory has a size of 27; otherwise the new inventory has the normal size for
+     * its type.
+     * @param owner The holder of the inventory; can be null if there's no holder.
+     * @param type The type of inventory to create.
+     * @return The new inventory.
+     */
+    Inventory createInventory(InventoryHolder owner, InventoryType type);
+
+    /**
+     * Creates an empty inventory of type {@link InventoryType#CHEST} with the specified size.
+     * @param owner The holder of the inventory; can be null if there's no holder.
+     * @param size The size of inventory to create; must be a multiple of 9.
+     * @return The new inventory.
+     * @throws IllegalArgumentException If the size is not a multiple of 9.
+     */
+    Inventory createInventory(InventoryHolder owner, int size);
+
+    /**
+     * Creates an empty inventory of type {@link InventoryType#CHEST} with the specified size and title.
+     * @param owner The holder of the inventory; can be null if there's no holder.
+     * @param size The size of inventory to create; must be a multiple of 9.
+     * @param title The title of the inventory, to be displayed when it is viewed.
+     * @return The new inventory.
+     * @throws IllegalArgumentException If the size is not a multiple of 9.
+     */
+    Inventory createInventory(InventoryHolder owner, int size, String title);
+
     
     public boolean isOverridingBiome();
     

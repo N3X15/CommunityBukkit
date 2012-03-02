@@ -12,13 +12,14 @@ import org.bukkit.Note;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
+import org.bukkit.conversations.Conversable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.messaging.PluginMessageRecipient;
 
 /**
  * Represents a player, connected or not
  */
-public interface Player extends HumanEntity, CommandSender, OfflinePlayer, PluginMessageRecipient {
+public interface Player extends HumanEntity, Conversable, CommandSender, OfflinePlayer, PluginMessageRecipient {
     /**
      * Gets the "friendly" name to display of this player. This may include color.
      * <p />
@@ -201,9 +202,18 @@ public interface Player extends HumanEntity, CommandSender, OfflinePlayer, Plugi
      *
      * @param loc the location to play the effect at
      * @param effect the {@link Effect}
-     * @param data a data bit needed for the RECORD_PLAY, SMOKE, and STEP_SOUND sounds
+     * @param data a data bit needed for some effects
      */
     public void playEffect(Location loc, Effect effect, int data);
+
+    /**
+     * Plays an effect to just this player.
+     *
+     * @param loc the location to play the effect at
+     * @param effect the {@link Effect}
+     * @param data a data bit needed for some effects
+     */
+    public <T> void playEffect(Location loc, Effect effect, T data);
 
     /**
      * Send a block change. This fakes a block change packet for a user at

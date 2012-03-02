@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.bukkit.configuration.Configuration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
@@ -197,6 +199,7 @@ public class ConfigurationSerialization {
      *
      * @param clazz Class to register
      * @param alias Alias to register as
+     * @see SerializableAs
      */
     public static void registerClass(Class<? extends ConfigurationSerializable> clazz, String alias) {
         aliases.put(alias, clazz);

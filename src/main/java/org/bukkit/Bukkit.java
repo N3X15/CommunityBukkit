@@ -12,7 +12,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.help.HelpMap;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.PluginManager;
@@ -320,5 +324,21 @@ public final class Bukkit {
 
     public static OfflinePlayer[] getOfflinePlayers() {
         return server.getOfflinePlayers();
+    }
+
+    public static Inventory createInventory(InventoryHolder owner, InventoryType type) {
+        return server.createInventory(owner, type);
+    }
+
+    public static Inventory createInventory(InventoryHolder owner, int size) {
+        return server.createInventory(owner, size);
+    }
+
+    public static Inventory createInventory(InventoryHolder owner, int size, String title) {
+        return server.createInventory(owner, size, title);
+    }
+
+    public static HelpMap getHelpMap() {
+        return server.getHelpMap();
     }
 }

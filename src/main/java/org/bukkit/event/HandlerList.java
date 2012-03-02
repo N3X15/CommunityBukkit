@@ -9,12 +9,11 @@ import java.util.Map.Entry;
 /**
  * A list of event handlers, stored per-event. Based on lahwran's fevents.
  */
-@SuppressWarnings("unchecked")
 public class HandlerList {
     /**
      * Handler array. This field being an array is the key to this system's speed.
      */
-    private RegisteredListener[][] handlers = new RegisteredListener[EventPriority.values().length][];
+    private RegisteredListener[] handlers = null;
 
     /**
      * Dynamic handler lists. These are changed using register() and
@@ -22,15 +21,6 @@ public class HandlerList {
      * time they have changed.
      */
     private final EnumMap<EventPriority, ArrayList<RegisteredListener>> handlerslots;
-
-    /**
-     * Whether the current HandlerList has been fully baked. When this is set
-     * to false, the Map<EventPriority, List<RegisteredListener>> will be baked to RegisteredListener[][]
-     * next time the event is called.
-     *
-     * @see org.bukkit.plugin.SimplePluginManager#callEvent
-     */
-    private boolean baked = false;
 
     /**
      * List of all HandlerLists which have been created, for use in bakeAll()
@@ -56,7 +46,7 @@ public class HandlerList {
             for (List<RegisteredListener> list : h.handlerslots.values()) {
                 list.clear();
             }
-            h.baked = false;
+            h.handlers = null;
         }
     }
 
@@ -102,7 +92,7 @@ public class HandlerList {
     public void register(RegisteredListener listener) {
         if (handlerslots.get(listener.getPriority()).contains(listener))
             throw new IllegalStateException("This listener is already registered to priority " + listener.getPriority().toString());
-        baked = false;
+        handlers = null;
         handlerslots.get(listener.getPriority()).add(listener);
     }
 
@@ -123,9 +113,8 @@ public class HandlerList {
      * @param listener listener to remove
      */
     public void unregister(RegisteredListener listener) {
-        if (handlerslots.get(listener.getPriority()).contains(listener)) {
-            baked = false;
-            handlerslots.get(listener.getPriority()).remove(listener);
+        if (handlerslots.get(listener.getPriority()).remove(listener)) {
+            handlers = null;
         }
     }
 
@@ -144,7 +133,7 @@ public class HandlerList {
                 }
             }
         }
-        if (changed) baked = false;
+        if (changed) handlers = null;
     }
 
     /**
@@ -162,18 +151,19 @@ public class HandlerList {
                 }
             }
         }
-        if (changed) baked = false;
+        if (changed) handlers = null;
     }
 
     /**
      * Bake HashMap and ArrayLists to 2d array - does nothing if not necessary
      */
     public void bake() {
-        if (baked) return; // don't re-bake when still valid
+        if (handlers != null) return; // don't re-bake when still valid
+        List<RegisteredListener> entries = new ArrayList<RegisteredListener>();
         for (Entry<EventPriority, ArrayList<RegisteredListener>> entry : handlerslots.entrySet()) {
-            handlers[entry.getKey().getSlot()] = (entry.getValue().toArray(new RegisteredListener[entry.getValue().size()]));
+            entries.addAll(entry.getValue());
         }
-        baked = true;
+        handlers = entries.toArray(new RegisteredListener[entries.size()]);
     }
 
     /**
@@ -181,7 +171,8 @@ public class HandlerList {
      *
      * @return the array of registered listeners
      */
-    public RegisteredListener[][] getRegisteredListeners() {
+    public RegisteredListener[] getRegisteredListeners() {
+        bake();
         return handlers;
     }
 
@@ -211,6 +202,7 @@ public class HandlerList {
      *
      * @return the list of all handler lists
      */
+    @SuppressWarnings("unchecked")
     public static ArrayList<HandlerList> getHandlerLists() {
         return (ArrayList<HandlerList>) allLists.clone();
     }
