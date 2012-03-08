@@ -601,10 +601,11 @@ public interface Server extends PluginMessageRecipient {
      */
     Inventory createInventory(InventoryHolder owner, int size, String title);
 
-    
+    // COMMUNITYBUKKIT START
     public boolean isOverridingBiome();
     
     public float getTemperatureOverride();
     
     public float getHumidityOverride();
+	// COMMUNITYBUKKIT END
 }
